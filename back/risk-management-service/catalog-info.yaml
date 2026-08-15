@@ -1,0 +1,28 @@
+specVersion: vsf-idp.io/v2
+
+metadata:
+  domain: banking
+  system: banking-system
+  namespace: banking
+
+spec:
+  type: service
+  id: risk-management-service
+  name: Risk Management Service
+  description: Dịch vụ đánh giá rủi ro nợ nần, truy vấn cơ sở dữ liệu ngân hàng trung ương và quyết định duyệt khoản vay
+  owners:
+    members:
+      - user: emree.unaldi@gmail.com
+        role: techlead
+  review:
+    branch: "main"
+
+  topology:
+    - ref: system:banking/banking-system
+      reason: Component này là một phần của hệ thống banking-system
+    - ref: component:banking/discovery-service
+      reason: Đăng ký dịch vụ với Eureka Server
+    - ref: component:banking/config-server
+      reason: Lấy cấu hình tập trung từ Config Server
+    - ref: component:banking/bank-data-access-service
+      reason: Gửi yêu cầu truy vấn dữ liệu tài chính người dùng từ Ngân hàng trung ương

@@ -1,0 +1,22 @@
+specVersion: vsf-idp.io/v2
+
+metadata:
+  domain: banking
+  system: banking-system
+  namespace: banking
+
+spec:
+  type: service
+  id: discovery-service
+  name: Discovery Service (Eureka Server)
+  description: Dịch vụ Eureka Registry Server giúp phát hiện dịch vụ tự động cho kiến trúc microservices
+  owners:
+    members:
+      - user: emree.unaldi@gmail.com
+        role: techlead
+  review:
+    branch: "main"
+
+  topology:
+    - ref: system:banking/banking-system
+      reason: Component này là một phần của hệ thống banking-system

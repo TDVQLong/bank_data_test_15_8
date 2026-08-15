@@ -1,0 +1,24 @@
+specVersion: vsf-idp.io/v2
+
+metadata:
+  domain: banking
+  system: banking-system
+  namespace: banking
+
+spec:
+  type: service
+  id: loan-application-frontend
+  name: Loan Application Frontend
+  description: Giao diện web ứng dụng React cho phép khách hàng đăng ký vay, tải tài liệu, nhận thông báo và xem hợp đồng
+  owners:
+    members:
+      - user: emree.unaldi@gmail.com
+        role: techlead
+  review:
+    branch: "main"
+
+  topology:
+    - ref: system:banking/banking-system
+      reason: Component này là một phần của hệ thống banking-system
+    - ref: component:banking/gateway-service
+      reason: Gửi toàn bộ yêu cầu API từ giao diện React tới hệ thống qua API Gateway

@@ -1,0 +1,24 @@
+specVersion: vsf-idp.io/v2
+
+metadata:
+  domain: banking
+  system: banking-system
+  namespace: banking
+
+spec:
+  type: service
+  id: gateway-service
+  name: API Gateway Service
+  description: Dịch vụ API Gateway điều hướng request, giới hạn băng thông (rate limiting) và load balancing
+  owners:
+    members:
+      - user: emree.unaldi@gmail.com
+        role: techlead
+  review:
+    branch: "main"
+
+  topology:
+    - ref: system:banking/banking-system
+      reason: Component này là một phần của hệ thống banking-system
+    - ref: component:banking/discovery-service
+      reason: Sử dụng Discovery Server để định tuyến động đến các microservices

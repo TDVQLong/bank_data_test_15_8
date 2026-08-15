@@ -1,0 +1,28 @@
+specVersion: vsf-idp.io/v2
+
+metadata:
+  domain: banking
+  system: banking-system
+  namespace: banking
+
+spec:
+  type: service
+  id: credit-shower-service
+  name: Credit Shower Service
+  description: Dịch vụ truy xuất và hiển thị thông tin chi tiết các khoản vay, hợp đồng tín dụng cho người dùng
+  owners:
+    members:
+      - user: emree.unaldi@gmail.com
+        role: techlead
+  review:
+    branch: "main"
+
+  topology:
+    - ref: system:banking/banking-system
+      reason: Component này là một phần của hệ thống banking-system
+    - ref: component:banking/discovery-service
+      reason: Đăng ký dịch vụ với Eureka Server
+    - ref: component:banking/config-server
+      reason: Lấy cấu hình tập trung từ Config Server
+    - ref: component:banking/database-server
+      reason: Truy xuất thông tin tài liệu và khoản vay từ Database Server

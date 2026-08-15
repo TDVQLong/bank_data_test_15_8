@@ -1,0 +1,26 @@
+specVersion: vsf-idp.io/v2
+
+metadata:
+  domain: banking
+  system: banking-system
+  namespace: banking
+
+spec:
+  type: service
+  id: commercial-service
+  name: Commercial Service
+  description: Dịch vụ kiểm tra điều kiện điều khoản vay, tính toán khả năng tài chính và tạo điểm số tín dụng ban đầu
+  owners:
+    members:
+      - user: emree.unaldi@gmail.com
+        role: techlead
+  review:
+    branch: "main"
+
+  topology:
+    - ref: system:banking/banking-system
+      reason: Component này là một phần của hệ thống banking-system
+    - ref: component:banking/discovery-service
+      reason: Đăng ký dịch vụ với Eureka Server
+    - ref: component:banking/config-server
+      reason: Lấy cấu hình tập trung từ Config Server

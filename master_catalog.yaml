@@ -1,0 +1,112 @@
+# master_catalog.yaml
+# Tổng quan toàn hệ thống Loan Management Microservices — khai báo system + danh sách component/resource/topic.
+# Mỗi component có file catalog-info chi tiết riêng trong thư mục của service đó.
+specVersion: vsf-idp.io/v2
+
+metadata:
+  domain: banking
+  system: loan-management-system
+  namespace: banking
+
+spec:
+  type: system
+  id: loan-management-master-system
+  name: Loan Management Microservices Master
+  description: >-
+    Hệ thống quản lý quy trình cấp tín dụng và khoản vay vi dịch vụ (Loan Management System),
+    bao gồm xử lý đơn nộp, trích xuất dữ liệu OCR, chấm điểm tín dụng, kiểm tra rủi ro,
+    giao tiếp ngân hàng trung ương, thông báo qua email và tạo hợp đồng tín dụng.
+
+  owners:
+    members:
+      - user: emree.unaldi@gmail.com
+        role: techlead
+
+  review:
+    branch: "main"
+
+  # ── Danh sách component thuộc system ───────────────────────────────────────
+  components:
+    - id: client-application-service
+      type: service
+      port: 8080
+      base_path: /api/v1/client-applications
+      catalog: back/client-application-service/catalog-info.yaml
+    - id: credit-shower-service
+      type: service
+      port: 8081
+      base_path: /api/v1/credit-shower
+      catalog: back/creditShower/catalog-info.yaml
+    - id: database-server
+      type: service
+      port: 8082
+      base_path: /api/v1/DatabaseServer
+      catalog: back/database-server/catalog-info.yaml
+    - id: ocr-service
+      type: service
+      port: 8083
+      base_path: /api/v1/OcrService
+      catalog: back/ocr-service/catalog-info.yaml
+    - id: commercial-service
+      type: service
+      port: 8084
+      base_path: /api/v1/CommercialService
+      catalog: back/commercial-service/catalog-info.yaml
+    - id: risk-management-service
+      type: service
+      port: 8085
+      base_path: /api/v1/risk-management
+      catalog: back/risk-management-service/catalog-info.yaml
+    - id: notification-service
+      type: service
+      port: 8086
+      base_path: /api/v1/notifications
+      catalog: back/notification-service/catalog-info.yaml
+    - id: credit-service
+      type: service
+      port: 8088
+      base_path: /api/v1/credits
+      catalog: back/credit-service/catalog-info.yaml
+    - id: bank-data-access-service
+      type: service
+      port: 8089
+      base_path: /api/v1/bank-data
+      catalog: back/bank-data-access-service/catalog-info.yaml
+    - id: config-server
+      type: config
+      port: 8888
+      catalog: back/config-server/catalog-info.yaml
+    - id: gateway-service
+      type: gateway
+      port: 8222
+      catalog: back/gateway/catalog-info.yaml
+    - id: discovery-service
+      type: other
+      port: 8761
+      catalog: back/discovery/catalog-info.yaml
+    - id: loan-application-frontend
+      type: frontend
+      port: 3000
+      catalog: front/catalog-info.yaml
+
+  # ── Hạ tầng / third-party ──────────────────────────────────────────────────
+  resources:
+    - id: postgres-db
+      ref: resource:banking/postgres-db
+      port: 5432
+      role: CSDL quan hệ lưu trữ dữ liệu hồ sơ khoản vay và hợp đồng tín dụng
+    - id: redis-db
+      ref: resource:banking/redis-db
+      port: 6379
+      role: Cache lưu trữ thông tin tạm thời và session
+    - id: mail-server
+      ref: resource:banking/mail-server
+      port: 587
+      role: SMTP Server gửi email thông báo phê duyệt/từ chối khoản vay
+
+  # ── Hàng đợi / Kafka & RabbitMQ Topics ────────────────────────────────────
+  topics:
+    - id: loan-notifications.queue
+      ref: banking/loan-notifications.queue
+      producer: risk-management-service, credit-service
+      consumer: notification-service

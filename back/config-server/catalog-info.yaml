@@ -1,0 +1,22 @@
+specVersion: vsf-idp.io/v2
+
+metadata:
+  domain: banking
+  system: banking-system
+  namespace: banking
+
+spec:
+  type: service
+  id: config-server
+  name: Config Server
+  description: Dịch vụ Spring Cloud Config Server quản lý và phân phối cấu hình tập trung cho toàn bộ các microservices
+  owners:
+    members:
+      - user: emree.unaldi@gmail.com
+        role: techlead
+  review:
+    branch: "main"
+
+  topology:
+    - ref: system:banking/banking-system
+      reason: Component này là một phần của hệ thống banking-system
